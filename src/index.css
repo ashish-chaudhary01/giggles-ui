@@ -1,0 +1,29 @@
+@import url(https://fonts.googleapis.com/css?family=Outfit:100,200,300,regular,500,600,700,800,900);
+@import "tailwindcss";
+@plugin "daisyui";
+@plugin "daisyui" {
+  themes:
+    light --default,
+    dark --prefersdark;
+}
+
+:root {
+  --foreground-color: #000;
+  --backgroud-color: #ffffff;
+  --primary-color: #49c5b6;
+  --secondary-color: #9333e9;
+}
+
+@theme {
+  --color-foreground: var(--foreground-color);
+  --color-background: var(--background-color);
+  --color-primary: var(--primary-color);
+  --color-secondary: var(--secondary-color);
+}
+
+html,
+body {
+  scroll-behavior: smooth;
+  font-family: "Outfit", sans-serif;
+  /* @apply bg-background text-foreground; */
+}
