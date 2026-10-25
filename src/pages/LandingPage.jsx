@@ -1,7 +1,6 @@
 import {
   ArrowRight,
   Check,
-  Link,
   MessageCircle,
   MessageCircleText,
 } from "lucide-react";
@@ -35,11 +34,11 @@ function LandingPage() {
     },
   ];
   return (
-    <div className="w-full">
+    <div className="w-full overflow-hidden">
       <Navbar />
       {/* hero section */}
       <section className="bg-linear-to-br from-blue-400/20 to-secondary/10 min-h-[90vh] flex items-center justify-center">
-        <div className="w-full max-w-xl text-center">
+        <div className="w-full max-w-xl px-4 text-center">
           <h1 className="text-5xl lg:text-7xl font-bold bg-clip-text bg-linear-to-tr from-primary to-blue-500 text-transparent mb-4">
             Chat Smarter. Connect Faster.
           </h1>
@@ -48,10 +47,10 @@ function LandingPage() {
             — all in one fast, secure chat app. No clutter, no delays."
           </p>
           {/* cta */}
-          <div className="flex items-center justify-center gap-4 mt-8 mb-10">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mt-8 mb-10">
             <a
               href="/signup"
-              className="group btn btn-primary bg-blue-500 outline-none px-12 py-8 text-xl border-none rounded-xl flex items-center gap-2 shadow-0"
+              className="group btn btn-primary bg-blue-500 outline-none px-7 sm:px-12 py-8 text-xl border-none rounded-xl flex items-center gap-2 shadow-0"
             >
               <span>Start Free</span>
               <span>
@@ -60,12 +59,12 @@ function LandingPage() {
             </a>
             <a
               href="/login"
-              class="btn btn-soft rounded-xl p-8 text-xl text-[#394E6A]"
+              className="btn btn-soft rounded-xl p-8 text-xl text-[#394E6A]"
             >
               Sign In
             </a>
           </div>
-          <div className="flex items-center justify-center gap-10 text-sm text-slate-400">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-slate-400">
             <div className="flex items-center gap-2">
               <Check size={17} className="text-green-500" />
               <span>Free to use</span>
