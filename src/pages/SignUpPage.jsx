@@ -1,5 +1,7 @@
 import { Lock, Mail, MessageCircle, User } from "lucide-react";
 import { useState } from "react";
+import { useAuthStore } from "../store/useAuthStore";
+import toast from "react-hot-toast";
 
 function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -44,9 +46,26 @@ function SignUpPage() {
     },
   ];
 
+  const { signup, isSignigUp } = useAuthStore();
+
+  function validateForm() {
+    if (!formData.fullName.trim()) return toast.error("Full name is required");
+    if (formData.username.length < 3)
+      return toast.error("username must be at least 3 characters");
+    if (!formData.email.trim()) return toast.error("email is required");
+    if (formData.password.length < 8)
+      return toast.error("Password must be at least 8 characters");
+
+    return true;
+  }
+
   // form submit
   function handleFormSubmit(e) {
     e.preventDefault();
+    const isFormValid = validateForm();
+    if (isFormValid === true) {
+      signup(formData);
+    }
   }
 
   return (
@@ -86,7 +105,7 @@ function SignUpPage() {
                 type="submit"
                 className="mt-2 w-full py-4 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 duration-300 active:scale-[0.95]"
               >
-                Sign Up
+                {isSignigUp ? "Signing up" : "Sign up"}
               </button>
               <div className="text-center text-gray-500 leading-relaxed mt-1">
                 <p>
