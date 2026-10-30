@@ -1,4 +1,4 @@
-import { Lock, Mail, MessageCircle } from "lucide-react";
+import { Loader, Lock, Mail, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import toast from "react-hot-toast";
@@ -78,7 +78,7 @@ function LoginPage() {
                 </span>
                 <h2 className="text-3xl font-bold">Sign In</h2>
                 <p className="text-gray-500 leading-relaxed">
-                  Welcome Back, Login to access your account
+                  Welcome Back, Login to start conversation
                 </p>
               </div>
 
@@ -108,7 +108,14 @@ function LoginPage() {
                   type="submit"
                   className="mt-2 w-full py-4 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 duration-300 active:scale-[0.95]"
                 >
-                  {isLoggingIn ? "Signing In" : "Sign In"}
+                  {isLoggingIn ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <Loader className="animate-spin" />
+                      <span>Signing In</span>
+                    </div>
+                  ) : (
+                    "Sign In"
+                  )}
                 </button>
                 <div className="text-center text-gray-500 leading-relaxed mt-1">
                   <p>
