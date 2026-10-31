@@ -1,31 +1,34 @@
-import { EllipsisVertical, Search } from "lucide-react";
+import { LogOut, Search } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useChatStore } from "../store/useChatStore";
 
 function Sidebar() {
   const [inputSearch, setInputSearch] = useState("");
-  const { authUser } = useAuthStore();
+  const { authUser, logout } = useAuthStore();
+  const { chatUsers, getChatUsers } = useChatStore();
+
+  useEffect(() => {
+    getChatUsers();
+  }, []);
   return (
-    <aside className="p-4 min-h-screen overflow-hidden">
+    <aside className="p-4 flex flex-col max-h-screen overflow-hidden">
       {/* logo and profile */}
       <div className="flex items-center gap-2 justify-between">
         <h2 className="text-xl font-bold text-[#394E6A]">Giggles</h2>
         <div className="flex items-center gap-2 sm:gap-2">
-          <div className="rounded-full hover:bg-black/10 p-2 duration-200">
-            <EllipsisVertical />
+          <div
+            onClick={logout}
+            className="rounded-full hover:bg-black/10 p-2 duration-200 text-gray-700 hover:text-gray-900 cursor-pointer"
+          >
+            <LogOut size={23} />
           </div>
           <div>
-            {authUser?.profilePic ? (
-              <img
-                src={authUser?.profilePic}
-                alt="profile"
-                className="size-10 object-cover rounded-full"
-              />
-            ) : (
-              <div className="size-10 flex items-center justify-center text-md rounded-full bg-black text-white">
-                {authUser.fullName.charAt(0)}
-              </div>
-            )}
+            <img
+              src={authUser?.profilePic || "/avtar.jpg"}
+              alt="profile"
+              className="size-10 object-cover rounded-full cursor-pointer"
+            />
           </div>
         </div>
       </div>
@@ -45,6 +48,9 @@ function Sidebar() {
       </div>
 
       {/* chat users */}
+      <div className="overflow-auto flex-1 mt-5">
+        {chatUsers.length === 0 ? <p>No chat user</p> : <p>chatting</p>}
+      </div>
     </aside>
   );
 }
