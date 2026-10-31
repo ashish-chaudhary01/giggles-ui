@@ -1,7 +1,9 @@
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVertical, Search } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
+import { useState } from "react";
 
 function Sidebar() {
+  const [inputSearch, setInputSearch] = useState("");
   const { authUser } = useAuthStore();
   return (
     <aside className="p-4 min-h-screen overflow-hidden">
@@ -29,6 +31,18 @@ function Sidebar() {
       </div>
 
       {/* search bar */}
+      <div className="flex items-center w-full border-2 border-black/30 rounded-full mt-4 bg-white/70 focus-within:border-black duration-150 focus-within:bg-black/2">
+        <span className="ml-4 text-gray-700">
+          <Search size={20} />
+        </span>
+        <input
+          type="text"
+          placeholder="Search"
+          value={inputSearch}
+          onChange={(e) => setInputSearch(e.target.value)}
+          className="px-4 py-1.5 flex-1 outline-none border-none"
+        />
+      </div>
 
       {/* chat users */}
     </aside>
