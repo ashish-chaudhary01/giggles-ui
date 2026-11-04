@@ -1,0 +1,49 @@
+import { ArrowLeft } from "lucide-react";
+import { useChatStore } from "../store/useChatStore";
+import { useState } from "react";
+
+function Header({ user }) {
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const { setSelectedUser } = useChatStore();
+  return (
+    <div className="px-3 py-5 sm:p-5 bg-white shadow flex items-center justify-between">
+      {/* left */}
+      <div className="flex items-center gap-2">
+        {/* back */}
+        <div
+          onClick={() => setSelectedUser(null)}
+          className="p-2 rounded-full hover:bg-black/10 duration-200 cursor-pointer"
+        >
+          <ArrowLeft size={20} />
+        </div>
+        {/* profile modal*/}
+        {/* todo : chat user profile modal view */}
+        <div
+          onClick={() => {
+            setIsProfileModalOpen(true);
+          }}
+          className="cursor-pointer flex items-center gap-2"
+        >
+          <div className="size-10 overflow-hidden rounded-full">
+            <img
+              src={user.profilePic || "/avtar.jpg"}
+              alt="userPic"
+              className="size-full object-cover rounded-full"
+            />
+          </div>
+          <div>
+            <h2 className="text-md font-bold capitalize leading-4.5">
+              {user.fullName}
+            </h2>
+            <p className="leading-relaxed tracking-wide text-sm text-gray-500">
+              offline
+            </p>
+          </div>
+        </div>
+      </div>
+      {/* right */}
+    </div>
+  );
+}
+
+export default Header;
