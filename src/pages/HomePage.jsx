@@ -1,15 +1,10 @@
-import { useEffect } from "react";
 import { useChatStore } from "../store/useChatStore";
 import Sidebar from "../components/Sidebar";
 import NoChatSelectedPlaceholder from "../components/NoChatSelectedPlaceholder";
 import ChatContainer from "../components/ChatContainer";
 
 function HomePage() {
-  const { getChatUsers, selectedUser } = useChatStore();
-
-  useEffect(() => {
-    getChatUsers();
-  }, []);
+  const { selectedUser } = useChatStore();
   return (
     <div className="bg-linear-to-b from-base-200 to-base-300 overflow-hidden">
       <div className="min-h-screen grid divide-x divide-black/15 sm:grid-cols-[360px_1fr]">

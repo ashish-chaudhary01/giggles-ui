@@ -3,7 +3,7 @@ import { axiosInstance } from "../lib/axios";
 
 export const useChatStore = create((set) => ({
   chatUsers: [], // sidebar users
-  selectedUser: null, // stores selected user _id
+  selectedUser: null, // stores selected user
   messages: [], // messages between user and selectedUser
   isUsersLoading: false,
   isMessagesLoading: false,
