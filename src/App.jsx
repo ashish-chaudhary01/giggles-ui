@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage";
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const { authUser, checkAuth } = useAuthStore();
@@ -31,6 +32,7 @@ function App() {
           path="/signup"
           element={!authUser ? <SignUpPage /> : <Navigate to={"/home"} />}
         />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
       <Toaster />
     </>

@@ -1,18 +1,17 @@
-import { LogOut, Search } from "lucide-react";
+import { CirclePlus, LogOut, Search } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
-import { useEffect, useState } from "react";
-import { useChatStore } from "../store/useChatStore";
+import { Link } from "react-router-dom";
+import ChatList from "./ChatList";
+import SearchList from "./SearchList";
+import { useState } from "react";
 
 function Sidebar() {
   const [inputSearch, setInputSearch] = useState("");
+  const [activeTab, setActiveTab] = useState("chatList");
   const { authUser, logout } = useAuthStore();
-  const { chatUsers, getChatUsers } = useChatStore();
 
-  useEffect(() => {
-    getChatUsers();
-  }, []);
   return (
-    <aside className="p-4 flex flex-col max-h-screen overflow-hidden">
+    <aside className="relative p-4 flex flex-col h-screen overflow-hidden">
       {/* logo and profile */}
       <div className="flex items-center gap-2 justify-between">
         <h2 className="text-xl font-bold text-[#394E6A]">Giggles</h2>
@@ -23,13 +22,13 @@ function Sidebar() {
           >
             <LogOut size={23} />
           </div>
-          <div>
+          <Link to={"/profile"}>
             <img
               src={authUser?.profilePic || "/avtar.jpg"}
               alt="profile"
               className="size-10 object-cover rounded-full cursor-pointer"
             />
-          </div>
+          </Link>
         </div>
       </div>
 
@@ -47,10 +46,22 @@ function Sidebar() {
         />
       </div>
 
-      {/* chat users */}
-      <div className="overflow-auto flex-1 mt-5">
-        {chatUsers.length === 0 ? <p>No chat user</p> : <p>chatting</p>}
-      </div>
+      {/* chat list and search list */}
+      {activeTab === "chatList" ? (
+        <ChatList inputSearch={inputSearch} />
+      ) : (
+        <SearchList />
+      )}
+
+      {/* search list toggle */}
+      {activeTab === "chatList" && (
+        <div
+          onClick={() => setActiveTab("searchList")}
+          className="absolute bottom-5 right-5 text-white/70 cursor-pointer hover:text-white duration-200"
+        >
+          <CirclePlus size={50} className="bg-[#36C571] rounded-full" />
+        </div>
+      )}
     </aside>
   );
 }
