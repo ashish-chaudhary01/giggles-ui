@@ -11,10 +11,10 @@ function Sidebar() {
   const { authUser, logout } = useAuthStore();
 
   return (
-    <aside className="relative p-4 flex flex-col h-screen overflow-hidden">
+    <aside className="relative p-2 sm:p-4 flex flex-col h-screen overflow-hidden">
       {/* logo and profile */}
-      <div className="flex items-center gap-2 justify-between">
-        <h2 className="text-xl font-bold text-[#394E6A]">Giggles</h2>
+      <div className="flex items-center gap-2 p-2 sm:p-0 justify-between">
+        <h2 className="text-2xl font-bold text-[#394E6A]">Giggles</h2>
         <div className="flex items-center gap-2 sm:gap-2">
           <div
             onClick={logout}

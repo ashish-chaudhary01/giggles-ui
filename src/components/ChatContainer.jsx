@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useChatStore } from "../store/useChatStore";
 import Header from "./Header";
 import UserProfileModal from "./UserProfileModal";
@@ -17,21 +17,29 @@ function ChatContainer() {
     getMessagesByUserId,
   } = useChatStore();
 
+  const messageEndRef = useRef(null);
+
   const { authUser } = useAuthStore();
 
   useEffect(() => {
     getMessagesByUserId(selectedUser._id);
   }, [selectedUser, getMessagesByUserId]);
 
+  useEffect(() => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: "instant" });
+    }
+  }, [messages]);
+
   return (
-    <div className="relative flex flex-col">
+    <div className="h-screen relative flex flex-col">
       <Header
         user={selectedUser}
         setIsProfileModalOpen={setIsProfileModalOpen}
       />
 
       {/* messages container */}
-      <div className="p-4 overflow-y-auto flex-1">
+      <div className="p-4 sm:px-10 overflow-y-auto flex-1">
         {isMessagesLoading ? (
           <MessageSkeleton />
         ) : messages.length > 0 ? (
@@ -41,16 +49,14 @@ function ChatContainer() {
               className={`chat ${authUser._id === msg.senderId ? "chat-end" : "chat-start"}`}
             >
               <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src={
-                      (authUser._id === msg.senderId
-                        ? authUser.profilePic
-                        : selectedUser.profilePic) || "/avtar.jpg"
-                    }
-                  />
-                </div>
+                {authUser._id === msg.receiverId && (
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="Tailwind CSS chat bubble component"
+                      src={selectedUser.profilePic || "avtar.jpg"}
+                    />
+                  </div>
+                )}
               </div>
               <div className="chat-header">
                 <time className="text-xs opacity-50">
@@ -68,7 +74,7 @@ function ChatContainer() {
                   <img
                     src={msg.image}
                     alt="shared"
-                    className="rounded-lg h-48 object-cover"
+                    className="rounded-lg h-48 object-cover mb-2"
                   />
                 )}
                 {msg.text && msg.text}
@@ -78,6 +84,8 @@ function ChatContainer() {
         ) : (
           <NoMessageHistory />
         )}
+
+        <div ref={messageEndRef} />
       </div>
 
       {/* send message input */}
