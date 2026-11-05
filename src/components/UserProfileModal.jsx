@@ -6,7 +6,7 @@ function UserProfileModal({ selectedUser, setIsProfileModalOpen }) {
           setIsProfileModalOpen(false);
         }
       }}
-      className="absolute inset-0 flex items-end"
+      className="absolute inset-0 flex items-end z-100"
     >
       <div className="flex-1 bg-base-300 rounded-t-4xl p-2 sm:p-4 slide-up h-lg">
         <div className="relative">

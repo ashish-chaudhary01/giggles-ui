@@ -1,8 +1,20 @@
 import { ArrowLeft } from "lucide-react";
 import { useChatStore } from "../store/useChatStore";
+import { useEffect } from "react";
 
 function Header({ user, setIsProfileModalOpen }) {
   const { setSelectedUser } = useChatStore();
+
+  useEffect(() => {
+    const handleEscKey = (e) => {
+      if (e.key === "Escape") {
+        setSelectedUser(null);
+      }
+    };
+    window.addEventListener("keydown", handleEscKey);
+    return () => window.removeEventListener("keydown", handleEscKey);
+  }, [setSelectedUser]);
+
   return (
     <div className="px-3 py-5 sm:p-5 bg-white shadow flex items-center justify-between">
       {/* left */}
