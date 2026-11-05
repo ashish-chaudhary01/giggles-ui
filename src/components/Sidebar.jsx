@@ -50,7 +50,11 @@ function Sidebar() {
       {activeTab === "chatList" ? (
         <ChatList inputSearch={inputSearch} />
       ) : (
-        <SearchList inputSearch={inputSearch} />
+        <SearchList
+          inputSearch={inputSearch}
+          setActiveTab={setActiveTab}
+          setInputSearch={setInputSearch}
+        />
       )}
 
       {/* search list toggle */}

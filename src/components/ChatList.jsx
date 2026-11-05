@@ -42,7 +42,7 @@ function ChatList({ inputSearch }) {
       {filteredList.map((user, idx) => (
         <div
           key={idx}
-          className={`p-3 sm:p-4 flex items-center gap-3 rounded-xl hover:bg-black/10 slide-down cursor-pointer transition-all duration-75 ${selectedUser === user && "bg-black/10"}`}
+          className={`p-3 sm:p-4 flex items-center gap-3 rounded-xl hover:bg-black/10 cursor-pointer transition-all duration-75 ${selectedUser === user && "bg-black/10"}`}
           onClick={() => {
             setSelectedUser(user);
             setIsProfileModalOpen(false);

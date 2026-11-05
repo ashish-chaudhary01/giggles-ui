@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { useDebounce } from "use-debounce";
 
-function SearchList({ inputSearch }) {
+function SearchList({ inputSearch, setActiveTab, setInputSearch }) {
   const {
     searchUser,
     searchResult,
@@ -28,6 +28,8 @@ function SearchList({ inputSearch }) {
           onClick={() => {
             setSelectedUser(user);
             setIsProfileModalOpen(false);
+            setActiveTab("chatList");
+            setInputSearch("");
           }}
         >
           <div className={`avatar avatar-online`}>
@@ -43,6 +45,7 @@ function SearchList({ inputSearch }) {
             <h2 className="font-semibold text-[1.1rem] capitalize">
               {user.fullName}
             </h2>
+            <p className="text-sm font-medium text-gray-500">{user.username}</p>
           </div>
         </div>
       ))}
