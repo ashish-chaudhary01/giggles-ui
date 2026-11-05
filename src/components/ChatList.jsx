@@ -42,14 +42,14 @@ function ChatList({ inputSearch }) {
       {filteredList.map((user, idx) => (
         <div
           key={idx}
-          className={`p-3 sm:p-2 flex gap-3 rounded-xl hover:bg-black/10 slide-down cursor-pointer transition-all duration-75 ${selectedUser === user && "bg-black/10"}`}
+          className={`p-3 sm:p-4 flex items-center gap-3 rounded-xl hover:bg-black/10 slide-down cursor-pointer transition-all duration-75 ${selectedUser === user && "bg-black/10"}`}
           onClick={() => {
             setSelectedUser(user);
             setIsProfileModalOpen(false);
           }}
         >
           <div className={`avatar avatar-online`}>
-            <div className="size-13 shrink-0">
+            <div className="size-10 shrink-0">
               <img
                 src={user.profilePic || "/avtar.jpg"}
                 alt="user-profile"
