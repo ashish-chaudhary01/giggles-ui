@@ -2,6 +2,7 @@ import { Loader, Lock, Mail, MessageCircle, User } from "lucide-react";
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -73,19 +74,19 @@ function SignUpPage() {
       {/* navigation */}
       <nav className="sticky top-0 left-0 right-0 p-2 bg-bas-100 backdrop-blur-xl border-b border-black/10 shadow flex justify-between items-center gap-2 sm:gap-10 z-1000">
         <div className="ml-0 sm:ml-4">
-          <a href="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2">
             <span>
               <MessageCircle className="text-blue-500" />
             </span>
             <span className="text-xl font-bold text-[#394E6A]">Giggles</span>
-          </a>
+          </Link>
         </div>
-        <a
-          href="/login"
+        <Link
+          to="/login"
           className="btn btn-ghost text-[1rem] rounded-lg px-2 sm:px-4 py-6"
         >
           Sign In
-        </a>
+        </Link>
       </nav>
 
       {/* page */}
@@ -142,9 +143,9 @@ function SignUpPage() {
                 <div className="text-center text-gray-500 leading-relaxed mt-1">
                   <p>
                     Already have an account?{" "}
-                    <a href="/login" className="text-blue-500">
+                    <Link to="/login" className="text-blue-500">
                       Sign In
-                    </a>
+                    </Link>
                   </p>
                 </div>
               </form>

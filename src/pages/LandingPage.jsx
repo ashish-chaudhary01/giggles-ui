@@ -48,18 +48,18 @@ function LandingPage() {
         </div>
         {/* right */}
         <div className="flex items-center gap-1 sm:gap-2">
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="btn btn-ghost text-[1rem] rounded-lg px-2 sm:px-4 py-6"
           >
             Sign In
-          </a>
-          <a
-            href="/signup"
+          </Link>
+          <Link
+            to="/signup"
             className="btn btn-active text-[1rem] btn-primary bg-blue-500 outline-none border-none rounded-lg px-3 sm:px-6 py-6"
           >
             Get Started
-          </a>
+          </Link>
         </div>
       </nav>
 
@@ -75,21 +75,21 @@ function LandingPage() {
           </p>
           {/* cta */}
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mt-8 mb-10">
-            <a
-              href="/signup"
+            <Link
+              to="/signup"
               className="group btn btn-primary bg-blue-500 outline-none px-7 sm:px-12 py-8 text-xl border-none rounded-xl flex items-center gap-2 shadow-0"
             >
               <span>Start Free</span>
               <span>
                 <ArrowRight className="text-gray-200 group-hover:translate-x-1.25 duration-200" />
               </span>
-            </a>
-            <a
-              href="/login"
+            </Link>
+            <Link
+              to="/login"
               className="btn btn-soft rounded-xl p-8 text-xl text-[#394E6A]"
             >
               Sign In
-            </a>
+            </Link>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-slate-400">
             <div className="flex items-center gap-2">
