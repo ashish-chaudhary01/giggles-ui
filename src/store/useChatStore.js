@@ -9,6 +9,8 @@ export const useChatStore = create((set, get) => ({
   isUsersLoading: false,
   isMessagesLoading: false,
   isProfileModalOpen: false,
+  isSearchingUser: false,
+  searchResult: [],
 
   setSelectedUser: (selectedUser) => set({ selectedUser }),
   setIsProfileModalOpen: (value) => set({ isProfileModalOpen: value }),
@@ -49,6 +51,19 @@ export const useChatStore = create((set, get) => ({
     } catch (error) {
       console.log(error.message);
       toast.error("Message Not Send");
+    }
+  },
+
+  searchUser: async (query) => {
+    set({ isSearchingUser: true });
+    try {
+      const res = await axiosInstance.get(`/user/search?query=${query}`);
+      set({ searchResult: res.data });
+    } catch (error) {
+      console.log(error.message);
+      toast.error(error.message || "Failed to search user");
+    } finally {
+      set({ isSearchingUser: false });
     }
   },
 }));

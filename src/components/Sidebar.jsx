@@ -1,4 +1,4 @@
-import { CirclePlus, LogOut, Search } from "lucide-react";
+import { ArrowLeft, LogOut, Plus, Search } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Link } from "react-router-dom";
 import ChatList from "./ChatList";
@@ -50,16 +50,23 @@ function Sidebar() {
       {activeTab === "chatList" ? (
         <ChatList inputSearch={inputSearch} />
       ) : (
-        <SearchList />
+        <SearchList inputSearch={inputSearch} />
       )}
 
       {/* search list toggle */}
-      {activeTab === "chatList" && (
+      {activeTab === "chatList" ? (
         <div
           onClick={() => setActiveTab("searchList")}
           className="absolute bottom-5 right-5 text-white/70 cursor-pointer hover:text-white duration-200"
         >
-          <CirclePlus size={50} className="bg-[#36C571] rounded-full" />
+          <Plus className="bg-[#36C571] rounded-full size-12 p-2" />
+        </div>
+      ) : (
+        <div
+          onClick={() => setActiveTab("chatList")}
+          className="absolute bottom-5 right-5 text-white/70 cursor-pointer hover:text-white duration-200"
+        >
+          <ArrowLeft className="bg-[#36C571] rounded-full size-12 p-2" />
         </div>
       )}
     </aside>
