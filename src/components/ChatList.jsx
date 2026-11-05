@@ -2,8 +2,13 @@ import { useEffect } from "react";
 import { useChatStore } from "../store/useChatStore";
 
 function ChatList({ inputSearch }) {
-  const { chatUsers, getChatUsers, setSelectedUser, selectedUser } =
-    useChatStore();
+  const {
+    chatUsers,
+    getChatUsers,
+    setSelectedUser,
+    selectedUser,
+    setIsProfileModalOpen,
+  } = useChatStore();
 
   useEffect(() => {
     getChatUsers();
@@ -38,7 +43,10 @@ function ChatList({ inputSearch }) {
         <div
           key={idx}
           className={`p-3 sm:p-2 flex gap-3 rounded-xl hover:bg-black/10 slide-down cursor-pointer transition-all duration-75 ${selectedUser === user && "bg-black/10"}`}
-          onClick={() => setSelectedUser(user)}
+          onClick={() => {
+            setSelectedUser(user);
+            setIsProfileModalOpen(false);
+          }}
         >
           <div className={`avatar avatar-online`}>
             <div className="size-13 shrink-0">

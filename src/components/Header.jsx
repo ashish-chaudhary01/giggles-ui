@@ -1,9 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import { useChatStore } from "../store/useChatStore";
-import { useState } from "react";
 
-function Header({ user }) {
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+function Header({ user, setIsProfileModalOpen }) {
   const { setSelectedUser } = useChatStore();
   return (
     <div className="px-3 py-5 sm:p-5 bg-white shadow flex items-center justify-between">
@@ -16,8 +14,7 @@ function Header({ user }) {
         >
           <ArrowLeft size={20} />
         </div>
-        {/* profile modal*/}
-        {/* todo : chat user profile modal view */}
+
         <div
           onClick={() => {
             setIsProfileModalOpen(true);

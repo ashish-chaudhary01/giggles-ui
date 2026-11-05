@@ -7,8 +7,10 @@ export const useChatStore = create((set) => ({
   messages: [], // messages between user and selectedUser
   isUsersLoading: false,
   isMessagesLoading: false,
+  isProfileModalOpen: false,
 
   setSelectedUser: (selectedUser) => set({ selectedUser }),
+  setIsProfileModalOpen: (value) => set({ isProfileModalOpen: value }),
 
   getChatUsers: async () => {
     set({ isUsersLoading: true });

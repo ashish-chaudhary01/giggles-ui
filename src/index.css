@@ -52,3 +52,19 @@ html::-webkit-scrollbar {
     opacity: 1;
   }
 }
+
+/* slide up */
+.slide-up {
+  animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0.2;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

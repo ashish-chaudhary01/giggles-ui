@@ -6,7 +6,7 @@ import ChatContainer from "../components/ChatContainer";
 function HomePage() {
   const { selectedUser } = useChatStore();
   return (
-    <div className="bg-linear-to-b from-base-200 to-base-300 overflow-hidden">
+    <div className="bg-white overflow-hidden">
       <div className="min-h-screen grid divide-x divide-black/15 sm:grid-cols-[360px_1fr]">
         {/* desktop sidebar */}
         <div className="hidden sm:block">
