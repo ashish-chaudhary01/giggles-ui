@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import { useChatStore } from "../store/useChatStore";
 import Header from "./Header";
 import UserProfileModal from "./UserProfileModal";
-import { useAuthStore } from "../store/useAuthStore";
 import NoMessageHistory from "./NoMessageHistory";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "./MessageSkeleton";
@@ -18,8 +17,6 @@ function ChatContainer() {
   } = useChatStore();
 
   const messageEndRef = useRef(null);
-
-  const { authUser } = useAuthStore();
 
   useEffect(() => {
     getMessagesByUserId(selectedUser._id);
@@ -46,10 +43,10 @@ function ChatContainer() {
           messages.map((msg) => (
             <div
               key={msg._id}
-              className={`chat ${authUser._id === msg.senderId ? "chat-end" : "chat-start"}`}
+              className={`chat ${selectedUser._id === msg.senderId ? "chat-start" : "chat-end"}`}
             >
               <div className="chat-image avatar">
-                {authUser._id === msg.receiverId && (
+                {selectedUser._id === msg.senderId && (
                   <div className="w-10 rounded-full">
                     <img
                       alt="Tailwind CSS chat bubble component"
@@ -68,7 +65,7 @@ function ChatContainer() {
                 </time>
               </div>
               <div
-                className={`chat-bubble ${msg.senderId === authUser._id && "chat-bubble-info"}`}
+                className={`chat-bubble ${msg.senderId !== selectedUser._id && "chat-bubble-info"}`}
               >
                 {msg.image && (
                   <img

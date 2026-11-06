@@ -66,4 +66,17 @@ export const useChatStore = create((set, get) => ({
       set({ isSearchingUser: false });
     }
   },
+
+  resetUser: () => {
+    set({
+      chatUsers: [],
+      selectedUser: null,
+      messages: [],
+      isUsersLoading: false,
+      isMessagesLoading: false,
+      isProfileModalOpen: false,
+      isSearchingUser: false,
+      searchResult: [],
+    });
+  },
 }));
