@@ -11,7 +11,7 @@ function Sidebar() {
   const { authUser, logout } = useAuthStore();
 
   return (
-    <aside className="relative p-2 sm:p-4 flex flex-col h-screen overflow-hidden">
+    <aside className="relative flex h-full min-h-0 flex-col overflow-hidden p-2 sm:p-4">
       {/* logo and profile */}
       <div className="flex items-center gap-2 p-2 sm:p-0 justify-between">
         <h2 className="text-2xl font-bold text-[#394E6A]">Giggles</h2>
@@ -59,19 +59,23 @@ function Sidebar() {
 
       {/* search list toggle */}
       {activeTab === "chatList" ? (
-        <div
+        <button
+          type="button"
           onClick={() => setActiveTab("searchList")}
-          className="absolute bottom-5 right-5 text-white/70 cursor-pointer hover:text-white duration-200"
+          aria-label="Search users"
+          className="absolute bottom-4 right-4 z-10 cursor-pointer text-white/70 duration-200 hover:text-white"
         >
           <Plus className="bg-[#36C571] rounded-full size-12 p-2" />
-        </div>
+        </button>
       ) : (
-        <div
+        <button
+          type="button"
           onClick={() => setActiveTab("chatList")}
-          className="absolute bottom-5 right-5 text-white/70 cursor-pointer hover:text-white duration-200"
+          aria-label="Back to chats"
+          className="absolute bottom-4 right-4 z-10 cursor-pointer text-white/70 duration-200 hover:text-white"
         >
           <ArrowLeft className="bg-[#36C571] rounded-full size-12 p-2" />
-        </div>
+        </button>
       )}
     </aside>
   );
