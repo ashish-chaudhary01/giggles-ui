@@ -54,7 +54,7 @@ export const useAuthStore = create((set) => ({
     try {
       const res = await axiosInstance.get("/auth/logout");
       set({ authUser: null });
-      useChatStore.getState().resetUser();
+      useChatStore.getState().resetUser(); // reset every state of useChatStore
       toast.success(res.data.message);
     } catch (error) {
       console.log(error.message);

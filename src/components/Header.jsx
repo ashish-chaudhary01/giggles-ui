@@ -16,7 +16,7 @@ function Header({ user, setIsProfileModalOpen }) {
   }, [setSelectedUser]);
 
   return (
-    <div className="px-3 py-5 sm:p-5 bg-linear-to-b from-pink-300/10 via-blue-200/10 to-blue-100/10 shadow flex items-center justify-between">
+    <div className="flex shrink-0 items-center justify-between bg-linear-to-b from-pink-300/10 via-blue-200/10 to-blue-100/10 px-3 py-5 shadow sm:p-5">
       {/* left */}
       <div className="flex items-center gap-2">
         {/* back */}

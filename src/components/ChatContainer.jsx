@@ -29,14 +29,14 @@ function ChatContainer() {
   }, [messages]);
 
   return (
-    <div className="h-screen relative flex flex-col">
+    <div className="relative flex h-full min-h-0 flex-col overflow-hidden">
       <Header
         user={selectedUser}
         setIsProfileModalOpen={setIsProfileModalOpen}
       />
 
       {/* messages container */}
-      <div className="p-4 sm:px-10 overflow-y-auto flex-1">
+      <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:px-10">
         {isMessagesLoading ? (
           <MessageSkeleton />
         ) : messages.length > 0 ? (
@@ -86,7 +86,9 @@ function ChatContainer() {
       </div>
 
       {/* send message input */}
-      <MessageInput />
+      <div className="shrink-0">
+        <MessageInput />
+      </div>
 
       {/* user profile modal view */}
       {isProfileModalOpen && (
