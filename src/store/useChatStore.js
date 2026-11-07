@@ -94,6 +94,8 @@ export const useChatStore = create((set, get) => ({
           newMessage.senderId === authUser?._id)
       ) {
         set({ messages: [...messages, newMessage] });
+        const notificationSound = new Audio("/sounds/notification.mp3");
+        notificationSound.play().catch((e) => console.log(e.message));
       }
     });
   },
