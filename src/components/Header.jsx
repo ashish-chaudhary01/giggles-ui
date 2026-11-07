@@ -1,9 +1,12 @@
 import { ArrowLeft } from "lucide-react";
 import { useChatStore } from "../store/useChatStore";
 import { useEffect } from "react";
+import { useAuthStore } from "../store/useAuthStore";
 
 function Header({ user, setIsProfileModalOpen }) {
-  const { setSelectedUser } = useChatStore();
+  const { setSelectedUser, selectedUser } = useChatStore();
+  const { onlineUsers } = useAuthStore();
+  const isOnline = onlineUsers.includes(selectedUser._id);
 
   useEffect(() => {
     const handleEscKey = (e) => {
@@ -44,8 +47,10 @@ function Header({ user, setIsProfileModalOpen }) {
             <h2 className="text-md font-bold capitalize leading-4.5">
               {user.fullName}
             </h2>
-            <p className="leading-relaxed tracking-wide text-sm text-gray-500">
-              offline
+            <p
+              className={`leading-relaxed tracking-wide text-sm text-gray-500 ${isOnline && "text-green-500"}`}
+            >
+              {isOnline ? "Online" : "Offline"}
             </p>
           </div>
         </div>

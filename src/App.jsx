@@ -35,7 +35,6 @@ function App() {
         <Route
           path="/profile"
           element={authUser ? <ProfilePage /> : <Navigate to={"/home"} />}
-          // element={<ProfilePage />}
         />
       </Routes>
       <Toaster />

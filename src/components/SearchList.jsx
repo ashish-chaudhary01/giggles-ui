@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { useDebounce } from "use-debounce";
+import { useAuthStore } from "../store/useAuthStore";
 
 function SearchList({ inputSearch, setActiveTab, setInputSearch }) {
   const {
@@ -10,6 +11,8 @@ function SearchList({ inputSearch, setActiveTab, setInputSearch }) {
     selectedUser,
     setIsProfileModalOpen,
   } = useChatStore();
+
+  const { onlineUsers } = useAuthStore();
 
   const [debounceQuery] = useDebounce(inputSearch, 300);
 
@@ -32,7 +35,9 @@ function SearchList({ inputSearch, setActiveTab, setInputSearch }) {
             setInputSearch("");
           }}
         >
-          <div className={`avatar avatar-online`}>
+          <div
+            className={`avatar ${onlineUsers.includes(user._id) && "avatar-online"}`}
+          >
             <div className="size-10 shrink-0">
               <img
                 src={user.profilePic || "/avtar.jpg"}

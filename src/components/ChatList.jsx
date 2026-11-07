@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useChatStore } from "../store/useChatStore";
+import { useAuthStore } from "../store/useAuthStore";
 
 function ChatList({ inputSearch }) {
   const {
@@ -9,6 +10,8 @@ function ChatList({ inputSearch }) {
     selectedUser,
     setIsProfileModalOpen,
   } = useChatStore();
+
+  const { onlineUsers } = useAuthStore();
 
   useEffect(() => {
     getChatUsers();
@@ -48,7 +51,9 @@ function ChatList({ inputSearch }) {
             setIsProfileModalOpen(false);
           }}
         >
-          <div className={`avatar avatar-online`}>
+          <div
+            className={`avatar ${onlineUsers.includes(String(user._id)) ? "avatar-online" : ""}`}
+          >
             <div className="size-10 shrink-0">
               <img
                 src={user.profilePic || "/avtar.jpg"}
