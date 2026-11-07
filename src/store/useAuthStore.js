@@ -30,7 +30,11 @@ export const useAuthStore = create((set) => ({
       toast.success("Account created");
     } catch (err) {
       console.log("Error in signing up", err.message);
-      toast.error(err.response.data.message);
+      toast.error(
+        err.response.data.message ||
+          err.response.data.error ||
+          "Failed to sign up",
+      );
     } finally {
       set({ isSignigUp: false });
     }
@@ -44,7 +48,11 @@ export const useAuthStore = create((set) => ({
       toast.success("Logged in successfully");
     } catch (error) {
       console.log("Error in Logging in", error.message);
-      toast.error(error.response.data.message);
+      toast.error(
+        error.response.data.message ||
+          error.response.data.error ||
+          "Failed to sign in",
+      );
     } finally {
       set({ isLoggingIn: false });
     }
@@ -55,10 +63,25 @@ export const useAuthStore = create((set) => ({
       const res = await axiosInstance.get("/auth/logout");
       set({ authUser: null });
       useChatStore.getState().resetUser(); // reset every state of useChatStore
-      toast.success(res.data.message);
+      toast.success(res.data.message || "logout successfull");
     } catch (error) {
       console.log(error.message);
       toast.error("Please try again");
+    }
+  },
+
+  updateProfile: async (data) => {
+    try {
+      const res = await axiosInstance.post("/auth/updateProfile", data);
+      set({ authUser: res.data });
+      toast.success("Profile updated");
+    } catch (error) {
+      console.log(error.message);
+      toast.error(
+        error.response.data.message ||
+          error.response.data.error ||
+          "Failed to update profile",
+      );
     }
   },
 }));

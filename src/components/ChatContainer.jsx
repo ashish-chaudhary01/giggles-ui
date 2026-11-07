@@ -89,7 +89,6 @@ function ChatContainer() {
       <div className="shrink-0">
         <MessageInput />
       </div>
-
       {/* user profile modal view */}
       {isProfileModalOpen && (
         <UserProfileModal

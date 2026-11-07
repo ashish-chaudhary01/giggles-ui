@@ -32,7 +32,11 @@ function App() {
           path="/signup"
           element={!authUser ? <SignUpPage /> : <Navigate to={"/home"} />}
         />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route
+          path="/profile"
+          element={authUser ? <ProfilePage /> : <Navigate to={"/home"} />}
+          // element={<ProfilePage />}
+        />
       </Routes>
       <Toaster />
     </>
