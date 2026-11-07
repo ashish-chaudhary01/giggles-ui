@@ -14,13 +14,22 @@ function ChatContainer() {
     isProfileModalOpen,
     setIsProfileModalOpen,
     getMessagesByUserId,
+    subscribeToMessages,
+    unsubscribeFromMessage,
   } = useChatStore();
 
   const messageEndRef = useRef(null);
 
   useEffect(() => {
     getMessagesByUserId(selectedUser._id);
-  }, [selectedUser, getMessagesByUserId]);
+    subscribeToMessages();
+    return () => unsubscribeFromMessage();
+  }, [
+    selectedUser,
+    getMessagesByUserId,
+    subscribeToMessages,
+    unsubscribeFromMessage,
+  ]);
 
   useEffect(() => {
     if (messageEndRef.current) {
