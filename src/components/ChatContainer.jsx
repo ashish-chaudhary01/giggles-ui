@@ -5,6 +5,7 @@ import UserProfileModal from "./UserProfileModal";
 import NoMessageHistory from "./NoMessageHistory";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "./MessageSkeleton";
+import { useAuthStore } from "../store/useAuthStore";
 
 function ChatContainer() {
   const {
@@ -15,21 +16,15 @@ function ChatContainer() {
     setIsProfileModalOpen,
     getMessagesByUserId,
     subscribeToMessages,
-    unsubscribeFromMessage,
   } = useChatStore();
+  const socket = useAuthStore((state) => state.socket);
 
   const messageEndRef = useRef(null);
 
   useEffect(() => {
     getMessagesByUserId(selectedUser._id);
-    subscribeToMessages();
-    return () => unsubscribeFromMessage();
-  }, [
-    selectedUser,
-    getMessagesByUserId,
-    subscribeToMessages,
-    unsubscribeFromMessage,
-  ]);
+    return subscribeToMessages();
+  }, [selectedUser, socket, getMessagesByUserId, subscribeToMessages]);
 
   useEffect(() => {
     if (messageEndRef.current) {

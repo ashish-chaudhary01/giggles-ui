@@ -6,19 +6,29 @@ import toast from "react-hot-toast";
 function MessageInput() {
   const [inputText, setInputText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [isSending, setIsSending] = useState(false);
   const { sendMessage, selectedUser } = useChatStore();
   const fileInputRef = useRef(null);
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!inputText.trim() && !imagePreview) return;
-    sendMessage(selectedUser._id, {
-      text: inputText.trim(),
-      image: imagePreview,
-    });
-    setInputText("");
-    setImagePreview(null);
-    if (fileInputRef) fileInputRef.current.value = null;
+    if (isSending || (!inputText.trim() && !imagePreview) || !selectedUser?._id)
+      return;
+
+    setIsSending(true);
+    try {
+      const sent = await sendMessage(selectedUser._id, {
+        text: inputText.trim(),
+        image: imagePreview,
+      });
+      if (sent) {
+        setInputText("");
+        setImagePreview(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+      }
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const handleImageChange = (e) => {
@@ -84,7 +94,8 @@ function MessageInput() {
 
         <button
           type="submit"
-          className={`${inputText.length > 0 || imagePreview ? "flex" : "hidden"} items-center justify-center p-2 sm:p-3 rounded-full bg-blue-500 text-white transition-all duration-200`}
+          disabled={isSending}
+          className={`${inputText.length > 0 || imagePreview ? "flex" : "hidden"} items-center justify-center p-2 sm:p-3 rounded-full bg-blue-500 text-white transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60`}
         >
           <SendHorizontal className="transform" />
         </button>

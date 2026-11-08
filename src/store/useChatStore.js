@@ -13,7 +13,8 @@ export const useChatStore = create((set, get) => ({
   isSearchingUser: false,
   searchResult: [],
 
-  setSelectedUser: (selectedUser) => set({ selectedUser }),
+  setSelectedUser: (selectedUser) =>
+    set({ selectedUser, messages: [], isMessagesLoading: Boolean(selectedUser) }),
   setIsProfileModalOpen: (value) => set({ isProfileModalOpen: value }),
 
   getChatUsers: async () => {
@@ -32,26 +33,49 @@ export const useChatStore = create((set, get) => ({
     set({ isMessagesLoading: true });
     try {
       const res = await axiosInstance.get(`/message/${userId}`);
-      set({ messages: res.data });
+      set((state) => {
+        if (String(state.selectedUser?._id) !== String(userId)) return state;
+
+        const messagesById = new Map(
+          res.data.map((message) => [message._id, message]),
+        );
+        state.messages.forEach((message) => {
+          messagesById.set(message._id, message);
+        });
+        return { messages: [...messagesById.values()] };
+      });
     } catch (error) {
       console.log(error.message);
       toast.error(error?.response?.data?.error || "Something went wrong");
     } finally {
-      set({ isMessagesLoading: false });
+      set((state) =>
+        String(state.selectedUser?._id) === String(userId)
+          ? { isMessagesLoading: false }
+          : state,
+      );
     }
   },
 
   sendMessage: async (receiverId, messageData) => {
-    const { messages } = get();
     try {
       const res = await axiosInstance.post(
         `/message/${receiverId}`,
         messageData,
       );
-      set({ messages: [...messages, res.data] });
+      set((state) => ({
+        messages: state.messages.some((message) => message._id === res.data._id)
+          ? state.messages
+          : [...state.messages, res.data],
+      }));
+      return true;
     } catch (error) {
       console.log(error.message);
-      toast.error("Message Not Send");
+      toast.error(
+        error?.response?.data?.message ||
+          error?.response?.data?.error ||
+          "Message not sent. Please try again.",
+      );
+      return false;
     }
   },
 
@@ -83,25 +107,46 @@ export const useChatStore = create((set, get) => ({
 
   subscribeToMessages: () => {
     const socket = useAuthStore.getState().socket;
+    if (!socket) return () => {};
 
-    socket.on("newMessage", (newMessage) => {
-      const { selectedUser, messages } = get();
+    const handleNewMessage = (newMessage) => {
+      const { selectedUser } = get();
       const { authUser } = useAuthStore.getState();
-      if (
-        (newMessage.senderId === selectedUser?._id &&
-          newMessage.receiverId === authUser?._id) ||
-        (newMessage.receiverId === selectedUser?._id &&
-          newMessage.senderId === authUser?._id)
-      ) {
-        set({ messages: [...messages, newMessage] });
-        const notificationSound = new Audio("/sounds/notification.mp3");
-        notificationSound.play().catch((e) => console.log(e.message));
-      }
-    });
-  },
+      const currentUserId = authUser?._id || authUser?.id;
+      const selectedUserId = selectedUser?._id;
+      if (!currentUserId || !selectedUserId) return;
 
-  unsubscribeFromMessage: () => {
-    const socket = useAuthStore.getState().socket;
-    socket.off("newMessage");
+      if (
+        (String(newMessage.senderId) === String(selectedUserId) &&
+          String(newMessage.receiverId) === String(currentUserId)) ||
+        (String(newMessage.receiverId) === String(selectedUserId) &&
+          String(newMessage.senderId) === String(currentUserId))
+      ) {
+        let isNewMessage = false;
+        set((state) => {
+          if (state.messages.some((message) => message._id === newMessage._id)) {
+            return state;
+          }
+          isNewMessage = true;
+          return { messages: [...state.messages, newMessage] };
+        });
+        if (isNewMessage) {
+          const notificationSound = new Audio("/sounds/notification.mp3");
+          notificationSound.play().catch((e) => console.log(e.message));
+        }
+      }
+    };
+
+    const handleSocketConnect = () => {
+      const selectedUser = get().selectedUser;
+      if (selectedUser?._id) get().getMessagesByUserId(selectedUser._id);
+    };
+
+    socket.on("newMessage", handleNewMessage);
+    socket.on("connect", handleSocketConnect);
+    return () => {
+      socket.off("newMessage", handleNewMessage);
+      socket.off("connect", handleSocketConnect);
+    };
   },
 }));

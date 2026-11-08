@@ -12,6 +12,7 @@ export const useAuthStore = create((set, get) => ({
   isSignigUp: false,
   isLoggingIn: false,
   socket: null,
+  isSocketConnected: false,
   onlineUsers: [],
 
   checkAuth: async () => {
@@ -96,7 +97,7 @@ export const useAuthStore = create((set, get) => ({
   // socket connection establish
   connectSocket: () => {
     const { authUser, socket: currentSocket } = get();
-    if (!authUser || currentSocket?.connected) return;
+    if (!authUser || currentSocket?.connected || currentSocket?.active) return;
 
     const userId = authUser._id || authUser.id;
     if (!userId) return;
@@ -110,6 +111,15 @@ export const useAuthStore = create((set, get) => ({
 
     set({ socket });
 
+    socket.on("connect", () => {
+      set({ isSocketConnected: true });
+    });
+    socket.on("disconnect", () => {
+      set({ isSocketConnected: false, onlineUsers: [] });
+    });
+    socket.on("connect_error", (error) => {
+      console.error("Socket connection failed", error.message);
+    });
     socket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds });
     });
@@ -118,6 +128,6 @@ export const useAuthStore = create((set, get) => ({
   // disconnect socket
   disconnectSocket: () => {
     get().socket?.disconnect();
-    set({ socket: null, onlineUsers: [] });
+    set({ socket: null, isSocketConnected: false, onlineUsers: [] });
   },
 }));
