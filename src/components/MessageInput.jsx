@@ -80,7 +80,7 @@ function MessageInput() {
         />
         <div
           onClick={() => fileInputRef.current?.click()}
-          className={`p-2 sm:p-3 rounded-full bg-blue-100 text-blue-500 duration-100 ${imagePreview ? "bg-blue-500 text-white" : "hover:bg-blue-200"}`}
+          className={`p-2 sm:p-3 cursor-pointer rounded-full bg-blue-100 text-blue-500 duration-100 ${imagePreview ? "bg-blue-500 text-white" : "hover:bg-blue-200"}`}
         >
           <Image />
         </div>
@@ -89,13 +89,13 @@ function MessageInput() {
           placeholder="Type a message"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          className="flex-1 px-6 p-2 sm:py-3 outline-none border-2 border-black/15 bg-gray-100 rounded-full focus:border-blue-400"
+          className="w-full px-6 p-2 sm:py-3 outline-none border-2 border-black/15 bg-gray-100 rounded-full focus:border-blue-400"
         />
 
         <button
           type="submit"
           disabled={isSending}
-          className={`${inputText.length > 0 || imagePreview ? "flex" : "hidden"} items-center justify-center p-2 sm:p-3 rounded-full bg-blue-500 text-white transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60`}
+          className={`${inputText.length > 0 || imagePreview ? "flex" : "hidden"} items-center justify-center p-2 sm:p-3 rounded-full bg-blue-500 text-white cursor-pointer transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60`}
         >
           <SendHorizontal className="transform" />
         </button>

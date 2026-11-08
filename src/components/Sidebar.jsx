@@ -32,7 +32,7 @@ function Sidebar() {
         </div>
       </div>
       {/* search bar */}
-      <div className="flex items-center w-full border-2 border-black/30 rounded-full mt-4 bg-white/70 focus-within:border-black duration-150 focus-within:bg-black/2">
+      <div className="flex items-center w-full border-2 border-black/30 rounded-full mt-4 bg-white/70 focus-within:border-gray-600 duration-150 focus-within:bg-slate-50">
         <span className="ml-4 text-gray-700">
           <Search size={20} />
         </span>
@@ -41,7 +41,7 @@ function Sidebar() {
           placeholder="Search"
           value={inputSearch}
           onChange={(e) => setInputSearch(e.target.value)}
-          className="px-4 py-1.5 flex-1 outline-none border-none"
+          className="px-4 py-3 outline-none border-none placeholder:text-gray-400 text-gray-900"
         />
       </div>
       {/* chat list and search list */}
