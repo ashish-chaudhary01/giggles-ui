@@ -14,7 +14,11 @@ export const useChatStore = create((set, get) => ({
   searchResult: [],
 
   setSelectedUser: (selectedUser) =>
-    set({ selectedUser, messages: [], isMessagesLoading: Boolean(selectedUser) }),
+    set({
+      selectedUser,
+      messages: [],
+      isMessagesLoading: Boolean(selectedUser),
+    }),
   setIsProfileModalOpen: (value) => set({ isProfileModalOpen: value }),
 
   getChatUsers: async () => {
@@ -57,21 +61,35 @@ export const useChatStore = create((set, get) => ({
   },
 
   sendMessage: async (receiverId, messageData) => {
+    const { authUser } = useAuthStore.getState();
+
+    // update sender ui fast so that it does not feel slow
+    const msg = {
+      _id: new Date(),
+      receiverId: receiverId,
+      senderId: authUser._id,
+      text: messageData.text,
+      image: messageData.image,
+      createdAt: new Date(),
+    };
+    set({ messages: [...get().messages, msg] });
     try {
       const res = await axiosInstance.post(
         `/message/${receiverId}`,
         messageData,
       );
-      set((state) => ({
-        messages: state.messages.some((message) => message._id === res.data._id)
-          ? state.messages
-          : [...state.messages, res.data],
-      }));
+      // set((state) => ({
+      //   messages: state.messages.some((message) => message._id === res.data._id)
+      //     ? state.messages
+      //     : [...state.messages, res.data],
+      // }));
       return true;
     } catch (error) {
       console.log(error.message);
+      set({ messages: get().messages.filter((message) => message !== msg) });
       toast.error(
-        error?.response?.data?.message ||
+        error.message ||
+          error?.response?.data?.message ||
           error?.response?.data?.error ||
           "Message not sent. Please try again.",
       );
@@ -124,7 +142,9 @@ export const useChatStore = create((set, get) => ({
       ) {
         let isNewMessage = false;
         set((state) => {
-          if (state.messages.some((message) => message._id === newMessage._id)) {
+          if (
+            state.messages.some((message) => message._id === newMessage._id)
+          ) {
             return state;
           }
           isNewMessage = true;
