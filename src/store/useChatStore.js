@@ -19,6 +19,7 @@ export const useChatStore = create((set, get) => ({
       messages: [],
       isMessagesLoading: Boolean(selectedUser),
     }),
+
   setIsProfileModalOpen: (value) => set({ isProfileModalOpen: value }),
 
   getChatUsers: async () => {
@@ -26,6 +27,7 @@ export const useChatStore = create((set, get) => ({
     try {
       const res = await axiosInstance.get("/message/chatUsers");
       set({ chatUsers: res.data });
+      get().subscribeToNewChatUsers();
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -168,5 +170,22 @@ export const useChatStore = create((set, get) => ({
       socket.off("newMessage", handleNewMessage);
       socket.off("connect", handleSocketConnect);
     };
+  },
+
+  // if the sender is messaging receiver for the first time
+  // add the sender to the receiver chatList dynamically
+  subscribeToNewChatUsers: () => {
+    const socket = useAuthStore.getState().socket;
+    if (!socket) return;
+
+    socket.on("updateChatList", (user) => {
+      const { chatUsers } = get();
+      // set sender to the top of the receiver chatList
+      set({
+        chatUsers: [user, ...chatUsers.filter((u) => u._id !== user._id)],
+      });
+      const notificationSound = new Audio("/sounds/notification.mp3");
+      notificationSound.play().catch((e) => console.log(e.message));
+    });
   },
 }));
