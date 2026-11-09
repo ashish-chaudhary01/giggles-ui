@@ -33,42 +33,41 @@ function ChatList({ inputSearch }) {
         })
       : chatUsers;
 
-  if (!filteredList)
-    return (
-      <p className="text-center mt-10 capitalize font-medium text-gray-500">
-        No chat found
-      </p>
-    );
-
   return (
-    <div className="overflow-y-auto overflow-x-hidden flex-1 mt-5 space-y-1">
-      {filteredList.map((user, idx) => (
-        <div
-          key={idx}
-          className={`p-3 sm:p-4 flex items-center gap-3 rounded-xl hover:bg-black/10 cursor-pointer transition-all duration-75 ${selectedUser === user && "bg-black/10"}`}
-          onClick={() => {
-            setSelectedUser(user);
-            setIsProfileModalOpen(false);
-          }}
-        >
+    <div className="sidebar-scrollbar-hidden min-h-0 flex-1 overflow-y-auto overflow-x-hidden mt-5 space-y-1 pb-20">
+      {filteredList.length === 0 ? (
+        <p className="text-center mt-10 capitalize font-medium text-gray-500">
+          No chat found
+        </p>
+      ) : (
+        filteredList.map((user, idx) => (
           <div
-            className={`avatar ${onlineUsers.includes(String(user._id)) ? "avatar-online" : ""}`}
+            key={user._id || idx}
+            className={`p-3 sm:p-4 flex items-center gap-3 rounded-xl hover:bg-black/10 cursor-pointer transition-all duration-75 ${selectedUser === user && "bg-black/10"}`}
+            onClick={() => {
+              setSelectedUser(user);
+              setIsProfileModalOpen(false);
+            }}
           >
-            <div className="size-10 shrink-0">
-              <img
-                src={user.profilePic || "/avtar.jpg"}
-                alt="user-profile"
-                className="size-full rounded-full object-cover"
-              />
+            <div
+              className={`avatar ${onlineUsers.includes(String(user._id)) ? "avatar-online" : ""}`}
+            >
+              <div className="size-10 shrink-0">
+                <img
+                  src={user.profilePic || "/avtar.jpg"}
+                  alt="user-profile"
+                  className="size-full rounded-full object-cover"
+                />
+              </div>
+            </div>
+            <div className="truncate">
+              <h2 className="font-semibold text-[1.1rem] capitalize">
+                {user.fullName}
+              </h2>
             </div>
           </div>
-          <div className="truncate">
-            <h2 className="font-semibold text-[1.1rem] capitalize">
-              {user.fullName}
-            </h2>
-          </div>
-        </div>
-      ))}
+        ))
+      )}
     </div>
   );
 }

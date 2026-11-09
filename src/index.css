@@ -37,6 +37,15 @@ html::-webkit-scrollbar {
   display: none;
 }
 
+.sidebar-scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sidebar-scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
 /* slide down */
 .slide-down {
   animation: slideDown 0.3s ease-out;

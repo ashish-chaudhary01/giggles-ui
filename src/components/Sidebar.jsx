@@ -60,7 +60,7 @@ function Sidebar() {
           type="button"
           onClick={() => setActiveTab("searchList")}
           aria-label="Search users"
-          className="absolute bottom-4 right-4 z-10 cursor-pointer text-white/70 duration-200 hover:text-white"
+          className="absolute bottom-5 right-5 sm:right-10 z-10 cursor-pointer text-white/70 duration-200 hover:text-white"
         >
           <Plus className="bg-[#36C571] rounded-full size-12 p-2" />
         </button>
@@ -69,7 +69,7 @@ function Sidebar() {
           type="button"
           onClick={() => setActiveTab("chatList")}
           aria-label="Back to chats"
-          className="absolute bottom-4 right-4 z-10 cursor-pointer text-white/70 duration-200 hover:text-white"
+          className="absolute bottom-5 right-5 sm:right-10 z-10 cursor-pointer text-white/70 duration-200 hover:text-white"
         >
           <ArrowLeft className="bg-[#36C571] rounded-full size-12 p-2" />
         </button>

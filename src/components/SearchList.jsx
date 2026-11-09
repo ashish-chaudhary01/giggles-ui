@@ -24,14 +24,14 @@ function SearchList({ inputSearch, setActiveTab, setInputSearch }) {
 
   if (!inputSearch.trim()) {
     return (
-      <p className="text-center text-gray-500 text-md font-medium mt-5">
+      <p className="flex-1 text-center text-gray-500 text-md font-medium mt-5">
         Seach by username or email
       </p>
     );
   }
 
   return (
-    <div className="overflow-y-auto overflow-x-hidden flex-1 mt-5 space-y-1">
+    <div className="sidebar-scrollbar-hidden min-h-0 overflow-y-auto overflow-x-hidden flex-1 mt-5 space-y-1 pb-20">
       {searchResult.map((user, idx) => (
         <div
           key={idx}
