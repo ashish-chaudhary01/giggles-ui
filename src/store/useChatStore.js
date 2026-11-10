@@ -72,6 +72,7 @@ export const useChatStore = create((set, get) => ({
       senderId: authUser._id,
       text: messageData.text,
       image: messageData.image,
+      status: "sent",
       createdAt: new Date(),
     };
     set({ messages: [...get().messages, msg] });
@@ -80,11 +81,12 @@ export const useChatStore = create((set, get) => ({
         `/message/${receiverId}`,
         messageData,
       );
-      // set((state) => ({
-      //   messages: state.messages.some((message) => message._id === res.data._id)
-      //     ? state.messages
-      //     : [...state.messages, res.data],
-      // }));
+      // update the state with real response message
+      const updatedMessages = get().messages.map((message) =>
+        message._id === msg._id ? res.data : message,
+      );
+      // automatically marks the message status to deliverd
+      set({ messages: updatedMessages });
       return true;
     } catch (error) {
       console.log(error.message);
@@ -164,11 +166,21 @@ export const useChatStore = create((set, get) => ({
       if (selectedUser?._id) get().getMessagesByUserId(selectedUser._id);
     };
 
+    const handleMessageStatusUpdate = (data) => {
+      set((state) => ({
+        messages: state.messages.map((msg) =>
+          msg._id === data.messageId ? { ...msg, status: data.status } : msg,
+        ),
+      }));
+    };
+
     socket.on("newMessage", handleNewMessage);
     socket.on("connect", handleSocketConnect);
+    socket.on("messageStatusUpdated", handleMessageStatusUpdate);
     return () => {
       socket.off("newMessage", handleNewMessage);
       socket.off("connect", handleSocketConnect);
+      socket.off("messageStatusUpdated", handleMessageStatusUpdate);
     };
   },
 

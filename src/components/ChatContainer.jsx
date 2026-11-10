@@ -6,6 +6,7 @@ import NoMessageHistory from "./NoMessageHistory";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "./MessageSkeleton";
 import { useAuthStore } from "../store/useAuthStore";
+import { Check, CheckCheck } from "lucide-react";
 
 function ChatContainer() {
   const {
@@ -40,7 +41,7 @@ function ChatContainer() {
       />
 
       {/* messages container */}
-      <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:px-10">
+      <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden p-4 sm:px-10">
         {isMessagesLoading ? (
           <MessageSkeleton />
         ) : messages.length > 0 ? (
@@ -59,17 +60,9 @@ function ChatContainer() {
                   </div>
                 )}
               </div>
-              <div className="chat-header">
-                <time className="text-xs opacity-50">
-                  {new Date(msg.createdAt).toLocaleTimeString([], {
-                    hour: "numeric",
-                    minute: "2-digit",
-                    hour12: true,
-                  })}
-                </time>
-              </div>
+              <div className="chat-header"></div>
               <div
-                className={`chat-bubble ${msg.senderId !== selectedUser._id && "chat-bubble-info"}`}
+                className={`chat-bubble text-wrap max-w-[90%] sm:max-w-[75%] lg:max-w-[60%] min-w-0 ${msg.senderId !== selectedUser._id && "chat-bubble-info"}`}
               >
                 {msg.image && (
                   <img
@@ -78,8 +71,28 @@ function ChatContainer() {
                     className="rounded-lg h-48 object-cover mb-2"
                   />
                 )}
-                {msg.text && msg.text}
+                {msg.text && <span className="wrap-anywhere">{msg.text}</span>}
               </div>
+              {msg.senderId !== selectedUser._id && (
+                <div className="flex gap-1 justify-end items-center mt-1">
+                  <time className="text-xs opacity-50">
+                    {new Date(msg.createdAt).toLocaleTimeString([], {
+                      hour: "numeric",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}
+                  </time>
+                  <div className="">
+                    {msg.status === "sent" ? (
+                      <Check size={15} />
+                    ) : msg.status === "delivered" ? (
+                      <CheckCheck size={15} />
+                    ) : (
+                      <CheckCheck size={15} className="text-blue-500" />
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           ))
         ) : (
