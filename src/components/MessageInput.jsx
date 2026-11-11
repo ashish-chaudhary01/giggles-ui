@@ -17,13 +17,16 @@ function MessageInput() {
 
     setIsSending(true);
     try {
+      // doing this to clear input fast
+      const text = inputText.trim();
+      const image = imagePreview;
+      setInputText("");
+      setImagePreview(null);
       const sent = await sendMessage(selectedUser._id, {
-        text: inputText.trim(),
-        image: imagePreview,
+        text: text,
+        image: image,
       });
       if (sent) {
-        setInputText("");
-        setImagePreview(null);
         if (fileInputRef.current) fileInputRef.current.value = "";
       }
     } finally {

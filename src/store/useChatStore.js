@@ -185,7 +185,6 @@ export const useChatStore = create((set, get) => ({
           msg._id === data.messageId ? { ...msg, status: data.status } : msg,
         ),
       }));
-      console.log("seen");
     };
 
     socket.on("newMessage", handleNewMessage);
