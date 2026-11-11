@@ -158,6 +158,11 @@ export const useChatStore = create((set, get) => ({
           const notificationSound = new Audio("/sounds/notification.mp3");
           notificationSound.play().catch((e) => console.log(e.message));
         }
+        // emit the message seen event if receiver is in the chat and receives the real time message
+        socket.emit("markMessageSeen", {
+          messageId: newMessage._id,
+          status: "seen",
+        });
       }
     };
 
@@ -174,13 +179,24 @@ export const useChatStore = create((set, get) => ({
       }));
     };
 
+    const handleMessageSeenStatus = (data) => {
+      set((state) => ({
+        messages: state.messages.map((msg) =>
+          msg._id === data.messageId ? { ...msg, status: data.status } : msg,
+        ),
+      }));
+      console.log("seen");
+    };
+
     socket.on("newMessage", handleNewMessage);
     socket.on("connect", handleSocketConnect);
     socket.on("messageStatusUpdated", handleMessageStatusUpdate);
+    socket.on("messageSeen", handleMessageSeenStatus);
     return () => {
       socket.off("newMessage", handleNewMessage);
       socket.off("connect", handleSocketConnect);
       socket.off("messageStatusUpdated", handleMessageStatusUpdate);
+      socket.off("messageSeen", handleMessageSeenStatus);
     };
   },
 
