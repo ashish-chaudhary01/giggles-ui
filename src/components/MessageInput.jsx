@@ -1,5 +1,5 @@
 import { Image, SendHorizontal, XIcon } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import toast from "react-hot-toast";
 
@@ -9,6 +9,7 @@ function MessageInput() {
   const [isSending, setIsSending] = useState(false);
   const { sendMessage, selectedUser } = useChatStore();
   const fileInputRef = useRef(null);
+  const inputRef = useRef(null);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -51,6 +52,11 @@ function MessageInput() {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  // for automatically focus on input box whenever selectedUser changes
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [selectedUser]);
+
   return (
     <>
       {imagePreview && (
@@ -88,6 +94,7 @@ function MessageInput() {
           <Image />
         </div>
         <input
+          ref={inputRef}
           type="text"
           placeholder="Type a message"
           value={inputText}
