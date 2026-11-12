@@ -1,9 +1,12 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, EllipsisVertical, Trash } from "lucide-react";
 import { useChatStore } from "../store/useChatStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
+import { axiosInstance } from "../lib/axios";
+import toast from "react-hot-toast";
 
 function Header({ user, setIsProfileModalOpen }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { setSelectedUser, selectedUser } = useChatStore();
   const { onlineUsers } = useAuthStore();
   const isOnline = onlineUsers.includes(selectedUser._id);
@@ -30,8 +33,24 @@ function Header({ user, setIsProfileModalOpen }) {
     return lastSeen.toLocaleDateString();
   }
 
+  const handleMessagesDelete = (e) => {
+    e.preventDefault();
+    try {
+      axiosInstance.delete(`/message/${selectedUser._id}`);
+      toast.success("Messages deleted");
+    } catch (error) {
+      console.log(error.message);
+      toast.error(
+        error.response.data.error ||
+          error.response.data.message ||
+          "failed to delete messages",
+      );
+    }
+    setSelectedUser(null);
+  };
+
   return (
-    <div className="flex shrink-0 items-center justify-between bg-linear-to-b from-pink-300/10 via-blue-200/10 to-blue-100/10 px-3 py-5 shadow sm:p-5">
+    <div className="relative flex shrink-0 items-center justify-between bg-linear-to-b from-pink-300/10 via-blue-200/10 to-blue-100/10 px-3 py-5 shadow sm:p-5">
       {/* left */}
       <div className="flex items-center gap-2">
         {/* back */}
@@ -68,6 +87,59 @@ function Header({ user, setIsProfileModalOpen }) {
         </div>
       </div>
       {/* right */}
+      <div
+        onClick={() => setIsModalOpen(!isModalOpen)}
+        className="hover:bg-black/10 duration-200 p-2 rounded-full"
+      >
+        <EllipsisVertical />
+      </div>
+
+      {/* more chat settings modal */}
+      {isModalOpen && (
+        <>
+          {/* options container */}
+          <div className="absolute select-none rounded-lg boder border-black/20 shadow bg-slate-100 right-5 top-15 z-100 fade-in divide-y">
+            <button
+              className="btn select-none"
+              onClick={() => document.getElementById("my_modal_3").showModal()}
+            >
+              <div className="flex items-center gap-1.5 text-sm font-medium text-red-500 py-2.5 px-4 rounded-lg">
+                <Trash size={20} />
+                <span className="">Delete all messages</span>
+              </div>
+            </button>
+          </div>
+          {/* confirmation box */}
+          <dialog id="my_modal_3" className="modal">
+            <div className="modal-box">
+              <form onSubmit={handleMessagesDelete} method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button
+                  type="button"
+                  className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                  onClick={() => document.getElementById("my_modal_3").close()}
+                >
+                  ✕
+                </button>
+                <h3 className="font-bold text-lg text-red-500">
+                  Delete All Messages?
+                </h3>
+                <p className="py-3">
+                  It will delete all the messages between you and{" "}
+                  <span className="font-bold">{selectedUser.fullName}, </span>
+                  this is not reversible
+                </p>
+                {/* confirm button */}
+                <div className="text-end">
+                  <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 duration-150">
+                    Confirm & Delete
+                  </button>
+                </div>
+              </form>
+            </div>
+          </dialog>
+        </>
+      )}
     </div>
   );
 }

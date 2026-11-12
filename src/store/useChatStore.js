@@ -87,6 +87,7 @@ export const useChatStore = create((set, get) => ({
       );
       // automatically marks the message status to deliverd
       set({ messages: updatedMessages });
+      // set the sended message as last message
       set({
         chatUsers: get().chatUsers.map((chat) =>
           chat.user._id.toString() === receiverId.toString()
@@ -225,6 +226,7 @@ export const useChatStore = create((set, get) => ({
 
   // if the sender is messaging receiver for the first time
   // add the sender to the receiver chatList dynamically
+  // and to the top of the chat list of the receiver
   subscribeToNewChatUsers: () => {
     const socket = useAuthStore.getState().socket;
     if (!socket) return;
@@ -240,6 +242,20 @@ export const useChatStore = create((set, get) => ({
       });
       const notificationSound = new Audio("/sounds/notification.mp3");
       notificationSound.play().catch((e) => console.log(e.message));
+    });
+
+    // deleted chat event listner
+    socket.on("chatDeleted", (data) => {
+      const selectedUser = get().selectedUser;
+      set({
+        chatUsers: get().chatUsers.filter(
+          (chat) => chat.user._id.toString() !== data.userId.toString(),
+        ),
+        selectedUser:
+          selectedUser && selectedUser._id.toString() === data.userId.toString()
+            ? null
+            : selectedUser,
+      });
     });
   },
 }));
