@@ -87,6 +87,13 @@ export const useChatStore = create((set, get) => ({
       );
       // automatically marks the message status to deliverd
       set({ messages: updatedMessages });
+      set({
+        chatUsers: get().chatUsers.map((chat) =>
+          chat.user._id.toString() === receiverId.toString()
+            ? { ...chat, lastMessage: msg }
+            : chat,
+        ),
+      });
       return true;
     } catch (error) {
       console.log(error.message);
@@ -187,15 +194,32 @@ export const useChatStore = create((set, get) => ({
       }));
     };
 
+    const handleUserOffline = (data) => {
+      set((state) => ({
+        chatUsers: state.chatUsers.map((chat) =>
+          chat.user._id.toString() === data.userId
+            ? { ...chat, user: { ...chat.user, lastSeenAt: data.lastSeenAt } }
+            : chat,
+        ),
+
+        selectedUser:
+          state.selectedUser?._id === data.userId
+            ? { ...state.selectedUser, lastSeenAt: data.lastSeenAt }
+            : state.selectedUser,
+      }));
+    };
+
     socket.on("newMessage", handleNewMessage);
     socket.on("connect", handleSocketConnect);
     socket.on("messageStatusUpdated", handleMessageStatusUpdate);
     socket.on("messageSeen", handleMessageSeenStatus);
+    socket.on("userOffline", handleUserOffline);
     return () => {
       socket.off("newMessage", handleNewMessage);
       socket.off("connect", handleSocketConnect);
       socket.off("messageStatusUpdated", handleMessageStatusUpdate);
       socket.off("messageSeen", handleMessageSeenStatus);
+      socket.off("userOffline", handleUserOffline);
     };
   },
 
@@ -205,11 +229,14 @@ export const useChatStore = create((set, get) => ({
     const socket = useAuthStore.getState().socket;
     if (!socket) return;
 
-    socket.on("updateChatList", (user) => {
+    socket.on("updateChatList", (data) => {
       const { chatUsers } = get();
       // set sender to the top of the receiver chatList
       set({
-        chatUsers: [user, ...chatUsers.filter((u) => u._id !== user._id)],
+        chatUsers: [
+          data,
+          ...chatUsers.filter((chat) => chat.user._id !== data.user._id),
+        ],
       });
       const notificationSound = new Audio("/sounds/notification.mp3");
       notificationSound.play().catch((e) => console.log(e.message));

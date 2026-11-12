@@ -34,7 +34,7 @@ function ChatContainer() {
   }, [messages]);
 
   return (
-    <div className="relative flex h-full min-h-0 flex-col overflow-hidden">
+    <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-white">
       <Header
         user={selectedUser}
         setIsProfileModalOpen={setIsProfileModalOpen}

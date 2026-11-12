@@ -11,6 +11,8 @@ function ChatList({ inputSearch }) {
     setIsProfileModalOpen,
   } = useChatStore();
 
+  const { authUser } = useAuthStore();
+
   const { onlineUsers } = useAuthStore();
 
   useEffect(() => {
@@ -19,11 +21,11 @@ function ChatList({ inputSearch }) {
 
   const filteredList =
     inputSearch.trim().length > 0
-      ? chatUsers.filter((user) => {
+      ? chatUsers.filter((chat) => {
           const inputQuery = inputSearch.trim().toLowerCase();
-          const userEmail = user.email;
-          const username = user.username;
-          const fullName = user.fullName;
+          const userEmail = chat.user.email;
+          const username = chat.user.username;
+          const fullName = chat.user.fullName;
 
           return (
             fullName.includes(inputQuery) ||
@@ -40,30 +42,36 @@ function ChatList({ inputSearch }) {
           No chat found
         </p>
       ) : (
-        filteredList.map((user, idx) => (
+        filteredList.map((chat, idx) => (
           <div
-            key={user._id || idx}
-            className={`p-3 sm:p-4 flex items-center gap-3 rounded-xl hover:bg-black/10 cursor-pointer transition-all duration-75 ${selectedUser === user && "bg-black/10"}`}
+            key={chat.user?._id || idx}
+            className={`p-3 sm:p-4 flex gap-3 rounded-xl hover:bg-black/10 cursor-pointer transition-all duration-75 ${selectedUser === chat && "bg-black/10"}`}
             onClick={() => {
-              setSelectedUser(user);
+              setSelectedUser(chat.user);
               setIsProfileModalOpen(false);
             }}
           >
             <div
-              className={`avatar ${onlineUsers.includes(String(user._id)) ? "avatar-online" : ""}`}
+              className={`avatar ${onlineUsers.includes(String(chat.user?._id)) ? "avatar-online" : ""}`}
             >
               <div className="size-10 shrink-0">
                 <img
-                  src={user.profilePic || "/avtar.jpg"}
+                  src={chat.user?.profilePic || "/avtar.jpg"}
                   alt="user-profile"
                   className="size-full rounded-full object-cover"
                 />
               </div>
             </div>
             <div className="truncate">
-              <h2 className="font-semibold text-[1.1rem] capitalize">
-                {user.fullName}
+              <h2 className="font-semibold text-[1.1rem] capitalize leading-4.5">
+                {chat.user?.fullName}
               </h2>
+              <p className="text-gray-600 text-md">
+                {chat.lastMessage.senderId === authUser._id && (
+                  <span className="font-medium text-gray-600">You: </span>
+                )}
+                {chat.lastMessage?.text && chat.lastMessage.text}
+              </p>
             </div>
           </div>
         ))

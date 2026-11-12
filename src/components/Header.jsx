@@ -18,6 +18,18 @@ function Header({ user, setIsProfileModalOpen }) {
     return () => window.removeEventListener("keydown", handleEscKey);
   }, [setSelectedUser]);
 
+  // formatting the users last seen date and time
+  function formatLastSeen(date) {
+    const lastSeen = new Date(date);
+    const now = new Date();
+    const diffMs = now - lastSeen; // difference in mili-seconds (1s = 1000ms)
+    const diffMin = Math.floor(diffMs / (60 * 1000)); // converting the ms into minutes
+    if (diffMin < 1) return "just now";
+    if (diffMin < 60) return `${diffMin} min ago`;
+    if (diffMin < 1440) return `${diffMin} hour ago`; // there is 1440 minutes in 24 hours
+    return lastSeen.toLocaleDateString();
+  }
+
   return (
     <div className="flex shrink-0 items-center justify-between bg-linear-to-b from-pink-300/10 via-blue-200/10 to-blue-100/10 px-3 py-5 shadow sm:p-5">
       {/* left */}
@@ -50,7 +62,7 @@ function Header({ user, setIsProfileModalOpen }) {
             <p
               className={`leading-relaxed tracking-wide text-sm text-gray-500 ${isOnline && "text-green-500"}`}
             >
-              {isOnline ? "Online" : "Offline"}
+              {isOnline ? "Online" : formatLastSeen(user.lastSeenAt)}
             </p>
           </div>
         </div>
