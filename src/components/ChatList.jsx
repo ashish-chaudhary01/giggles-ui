@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
+import SidebarSkeleton from "./SidebarSkeleton";
 
 function ChatList({ inputSearch }) {
   const {
     chatUsers,
+    isUsersLoading,
     getChatUsers,
     setSelectedUser,
     selectedUser,
@@ -34,6 +36,8 @@ function ChatList({ inputSearch }) {
           );
         })
       : chatUsers;
+
+  if (isUsersLoading) return <SidebarSkeleton />;
 
   return (
     <div className="sidebar-scrollbar-hidden min-h-0 flex-1 overflow-y-auto overflow-x-hidden mt-5 space-y-1 pb-20">

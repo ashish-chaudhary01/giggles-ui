@@ -1,8 +1,13 @@
 import {
   ArrowRight,
   Check,
+  CheckCheck,
+  Image,
   MessageCircle,
   MessageCircleText,
+  Search,
+  UserRound,
+  Wifi,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -10,27 +15,33 @@ function LandingPage() {
   const features = [
     {
       icon: <MessageCircleText size={25} />,
-      title: "Real time messaging",
-      description:
-        "Instant messaging with real-time delivery and read receipts",
+      title: "Real-time conversations",
+      description: "Send and receive messages with live updates in your chats.",
     },
     {
-      icon: <MessageCircleText />,
-      title: "Premium Interface",
-      description:
-        "Instant messaging with real-time delivery and read receipts",
+      icon: <Wifi size={25} />,
+      title: "See who's online",
+      description: "Spot online friends right from the conversation list.",
     },
     {
-      icon: <MessageCircleText />,
-      title: "Real time messaging",
-      description:
-        "Instant messaging with real-time delivery and read receipts",
+      icon: <Image size={25} />,
+      title: "Share images",
+      description: "Add photos to your messages and share moments in chat.",
     },
     {
-      icon: <MessageCircleText />,
-      title: "Real time messaging",
-      description:
-        "Instant messaging with real-time delivery and read receipts",
+      icon: <Search size={25} />,
+      title: "Find people easily",
+      description: "Search for people by their name, username, or email.",
+    },
+    {
+      icon: <CheckCheck size={25} />,
+      title: "Message status",
+      description: "Know when a message is sent, delivered, or seen.",
+    },
+    {
+      icon: <UserRound size={25} />,
+      title: "Make your profile yours",
+      description: "Update your profile photo, name, username, and bio.",
     },
   ];
   return (
@@ -113,18 +124,18 @@ function LandingPage() {
         <div className="container mx-auto px-6">
           <div className="text-center">
             <h2 className="text-4xl md:text-5xl font-bold text-slate-500 mb-4">
-              Fast & Secure
+              Made for Better Conversations
             </h2>
             <p className="text-slate-400 text-xl leading-relaxed">
-              Lightweight, smooth, and built for quick convos.
+              Find your people, share a moment, and stay in sync.
             </p>
           </div>
 
           {/* cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
-            {features.map((item, idx) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+            {features.map((item) => (
               <div
-                key={idx}
+                key={item.title}
                 className="card bg-linear-to-r from-pink-50/15 to-base-100 border border-black/15 duration-200 transition-all "
               >
                 <div className="card-body items-center text-center">

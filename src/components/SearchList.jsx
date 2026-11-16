@@ -2,11 +2,13 @@ import { useEffect } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { useDebounce } from "use-debounce";
 import { useAuthStore } from "../store/useAuthStore";
+import SidebarSkeleton from "./SidebarSkeleton";
 
 function SearchList({ inputSearch, setActiveTab, setInputSearch }) {
   const {
     searchUser,
     searchResult,
+    isSearchingUser,
     setSelectedUser,
     selectedUser,
     setIsProfileModalOpen,
@@ -28,6 +30,13 @@ function SearchList({ inputSearch, setActiveTab, setInputSearch }) {
         Seach by username or email
       </p>
     );
+  }
+
+  if (
+    isSearchingUser ||
+    inputSearch.trim() !== debounceQuery.trim()
+  ) {
+    return <SidebarSkeleton />;
   }
 
   return (

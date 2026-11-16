@@ -1,16 +1,67 @@
-# React + Vite
+# Giggles
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Giggles is a real-time chat app for finding people and keeping conversations going. This repository contains the React frontend.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Real-time one-to-one messaging with sent, delivered, and seen indicators
+- Online status and chat-list updates
+- Search for people by name, username, or email
+- Share images in conversations
+- Editable profile details, including profile photo and bio
+- Responsive chat interface for desktop and mobile
 
-## React Compiler
+## Tech stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 and Vite
+- React Router
+- Zustand
+- Socket.IO client
+- Axios
+- Tailwind CSS and daisyUI
 
-## Expanding the ESLint configuration
+## Getting started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+
+- Node.js and npm
+- A running Giggles backend
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Configure the backend URL
+
+Create a `.env` file in the project root:
+
+```env
+VITE_BACKEND_URL=http://localhost:5000
+```
+
+Replace the example URL with your backend's origin. Do not add `/api/v1` to the value: the app adds that path for API requests and uses the origin for the Socket.IO connection.
+
+### Run the app
+
+```bash
+npm run dev
+```
+
+## Available scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the Vite development server |
+| `npm run lint` | Run ESLint |
+| `npm run build` | Create a production build in `dist/` |
+| `npm run preview` | Preview the production build locally |
+
+## App routes
+
+- `/` — landing page
+- `/signup` — create an account
+- `/login` — sign in
+- `/home` — conversations
+- `/profile` — view and edit your profile

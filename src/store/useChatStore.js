@@ -5,6 +5,7 @@ import { useAuthStore } from "./useAuthStore";
 
 export const useChatStore = create((set, get) => ({
   chatUsers: [], // sidebar users
+  hasFetchedChatUsers: false,
   selectedUser: null, // stores selected user
   messages: [], // messages between user and selectedUser
   isUsersLoading: false,
@@ -23,10 +24,12 @@ export const useChatStore = create((set, get) => ({
   setIsProfileModalOpen: (value) => set({ isProfileModalOpen: value }),
 
   getChatUsers: async () => {
+    if (get().isUsersLoading || get().hasFetchedChatUsers) return;
+
     set({ isUsersLoading: true });
     try {
       const res = await axiosInstance.get("/message/chatUsers");
-      set({ chatUsers: res.data });
+      set({ chatUsers: res.data, hasFetchedChatUsers: true });
       get().subscribeToNewChatUsers();
     } catch (error) {
       console.log(error.message);
@@ -125,6 +128,7 @@ export const useChatStore = create((set, get) => ({
   resetUser: () => {
     set({
       chatUsers: [],
+      hasFetchedChatUsers: false,
       selectedUser: null,
       messages: [],
       isUsersLoading: false,
